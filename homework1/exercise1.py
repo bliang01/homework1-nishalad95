@@ -1,4 +1,7 @@
-# the documenation has been written for you in this exercise
+# Author: Nisha LAD
+# AMATH 483B: High Performance Scientific Computing
+# Homework 1 Exercise 1
+# Functions created to output a Collatz Sequence
 
 def collatz_step(n):
     """Returns the result of the Collatz function.
@@ -16,7 +19,23 @@ def collatz_step(n):
         The result of C(n).
 
     """
-    pass
+    if n <= 0:
+	raise ValueError('Value not accepted, please enter a positive value')
+    elif n % 2 == 0:
+	return n / 2
+    elif n % 2 == 1 and n != 1:
+	return 3*n + 1
+    else:
+	return 1
+
+#print "n = 1: ", collatz_step(1)
+#print "n = 3: ", collatz_step(3)
+#print "n = 2: ", collatz_step(2)
+#print "n = 5: ", collatz_step(5)
+#print "n = 4: ", collatz_step(4)
+#print "n = 1.0: ", collatz_step(1.0)
+#print collatz_step(-1)
+
 
 def collatz(n):
     """Returns the Collatz sequence beginning with `n`.
@@ -34,4 +53,18 @@ def collatz(n):
         A Collatz sequence.
 
     """
-    pass
+    
+    sequence = [n]
+    currentValue = n    
+    while (currentValue != 1):
+	nextValue = collatz_step(currentValue)
+	sequence.append(nextValue)
+	currentValue = nextValue
+    return sequence
+
+#print "n = 1: ", collatz(1)
+#print "n = 6: ", collatz(6)
+#print "n = 2: ", collatz(2)
+#print "n = 3: ", collatz(3)
+#print "n = 0: ", collatz(0)
+#print "n = -1: ", collatz(-1)
