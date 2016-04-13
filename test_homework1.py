@@ -36,17 +36,21 @@ class TestExercise1(unittest.TestCase):
     * homework1.exercise1.collatz_step
     * homework1.exercise1.collatz
 
-    Here we list some suggested tests you should write for your code.
+Here we list some suggested tests you should write for your code.
     """
     def test_collatz_step(self):
         # you should probably write some tests to determine if collatz_step is
         # being correctly computed
-        raise NotImplementedError() # delete this line before writing tests
+	self.assertEqual(collatz_step(1), 1)
+	self.assertEqual(collatz_step(3), 10)
+	self.assertEqual(collatz_step(2), 1)
+	self.assertEqual(collatz_step(5), 16)
+	self.assertEqual(collatz_step(4), 2)
 
     def test_collatz_step_one(self):
         # you should probably write a test to see if collatz_step handles the
         # n=1 case correctly
-        raise NotImplementedError() # delete this line before writing tests
+        self.assertEquals(collatz_step(1), 1)
 
     def test_collatz_step_error(self):
         # this test has been written for you. it demonstrates how to test if a
@@ -54,17 +58,25 @@ class TestExercise1(unittest.TestCase):
         with self.assertRaises(ValueError):
             collatz_step(-1)
             collatz_step(-2)
+	    collatz_step(-2.5)
+	with self.assertRaises(TypeError):
+	    collatz_step(1.0)
 
     def test_collatz(self):
         # you should probably test the collatz() function against some collatz
         # sequences that you've computed by hand
-        raise NotImplementedError() # delete this line before writing tests
+	self.assertEquals(collatz(1), [1])
+	self.assertEquals(collatz(2), [2, 1])
+	self.assertEquals(collatz(3), [3, 10, 5, 16, 8, 4, 2, 1])
+	with self.assertRaises(ValueError):
+	    collatz(-1)
+	    collatz(0)
 
 
 class TestExercise2(unittest.TestCase):
     """Testing the validity of
 
-    * homework1.exercise2.gradient_step
+    * hiomework1.exercise2.gradient_step
     * homework1.exercise2.gradient_descent
 
     In this problem we give less guidance on what tests you should write but
@@ -84,6 +96,25 @@ class TestExercise2(unittest.TestCase):
         x1 = gradient_step(x0, df, sigma=0.25)
         x1_actual = 0.5 # x0 - sigma*(2*x0)
         self.assertAlmostEqual(x1, x1_actual)
+
+    def test2_sigmaAndEpsilon(self):
+	# this test determines whether gradient_step and gradient descent raises
+	# value errors on sigma and epsilon
+	f = lambda x: x**2 - 1
+        df = lambda x: 2*x
+        x = 1
+        with self.assertRaises(ValueError):
+		gradient_step(x, df, sigma=1.5)
+		gradient_step(x, df, sigma=-1)
+		gradient_descent(f, df, x, sigma=0.5, epsilon=-1)
+		gradient_descent(f, df, x, sigma=0.5, epsilon=2)
+		gradient_descent(f, df, x, sigma=2, epsilon=0.1)
+			
+    def test3_simpleExamples(self):
+	# this test verfies whether gradient_step works correctly for a variety of examples
+	pass
+
+# Still need to implement many more tests!!!!!!
 
 
 class TestExercise3(unittest.TestCase):
