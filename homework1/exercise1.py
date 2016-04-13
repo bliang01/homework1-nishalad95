@@ -12,29 +12,24 @@ def collatz_step(n):
     Parameters
     ----------
     n : int
+	to be passed through the collatz map.
 
     Returns
     -------
-    int
-        The result of C(n).
+    C(n) : int
+           The result of C(n), the first iteration of the collatz sequence of n.
 
     """
     if n <= 0:
 	raise ValueError('Value not accepted, please enter a positive value')
+    elif type(n) != int:
+	raise TypeError('Type entered not accepted, please enter an integer')
     elif n % 2 == 0:
 	return n / 2
-    elif n % 2 == 1 and n != 1:
-	return 3*n + 1
-    else:
+    elif n == 1:
 	return 1
-
-#print "n = 1: ", collatz_step(1)
-#print "n = 3: ", collatz_step(3)
-#print "n = 2: ", collatz_step(2)
-#print "n = 5: ", collatz_step(5)
-#print "n = 4: ", collatz_step(4)
-#print "n = 1.0: ", collatz_step(1.0)
-#print collatz_step(-1)
+    else:
+	return 3*n + 1
 
 
 def collatz(n):
@@ -46,11 +41,12 @@ def collatz(n):
     Parameters
     ----------
     n : int
+	to be passed through the collatz_step
 
     Returns
     -------
     sequence : list
-        A Collatz sequence.
+               The Collatz sequence for starting point n
 
     """
     
@@ -62,9 +58,4 @@ def collatz(n):
 	currentValue = nextValue
     return sequence
 
-#print "n = 1: ", collatz(1)
-#print "n = 6: ", collatz(6)
-#print "n = 2: ", collatz(2)
-#print "n = 3: ", collatz(3)
-#print "n = 0: ", collatz(0)
-#print "n = -1: ", collatz(-1)
+
