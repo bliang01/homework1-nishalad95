@@ -216,6 +216,7 @@ class TestExercise3(unittest.TestCase):
     def test_is_sdd(self):
 	# test written below to test if the is_sdd method correctly identifies
 	# matrices which are strictly diagonally dominant
+
 	
 	# is sdd
 	A = array([[10, -2], [3, 11]])
@@ -227,7 +228,9 @@ class TestExercise3(unittest.TestCase):
 
 	# is dd
 	C = array([[11, 2], [8, 10]])
-	self.assertEquals(is_sdd(C), False)
+	self.assertEquals(is_sdd(C), True)
+	C2 = array([[-10, 5], [0, 1]])
+	self.assertEquals(is_sdd(C2), True)
 
 	#is not sdd
 	D = array([[1,2,3], [4,5,6], [7,8,9]])
