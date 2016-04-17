@@ -37,14 +37,6 @@ def decompose(A):
     U = A - L - D
     return D, L, U
 
-A = array([[10, 2], [3, 11]])
-D, L, U = decompose(A)
-print D
-print L
-print U
-print type(decompose(A))
-
-
 def is_sdd(A):
     """Returns true if the matrix A is strictly diagonally dominant,
        returns false otherwise.
@@ -72,13 +64,10 @@ def is_sdd(A):
 			if i != j:
 				off_diag_elements += A[i,j] 
 
-    
-
     for i in range(0, len(A), 1):
 	if not abs(A[i, i]) > off_diag_elements:
 		return False
     return True
-
 
 def jacobi_step(D, L, U, b, xk):
     """Returns the next iteration xk1, given previous iteration xk, 
@@ -126,10 +115,6 @@ def jacobi_step(D, L, U, b, xk):
     xk1 = xk1.transpose()
     return xk1
 
-xk = array([5, 6])
-print jacobi_step(D, L, U, xk, xk)
-
-
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
     """Returns solution to linear matrix equation using the Jacobi iteration method 
     
@@ -151,13 +136,10 @@ def jacobi_iteration(A, b, x0, epsilon=1e-8):
     """
     D, L, U = decompose(A)
     xk1 = jacobi_step(D, L, U, b, x0)
-    while (norm(xk1 - x0, 2) < epsilon):
+    while (norm(xk1 - x0, 2) > epsilon):
 	x0 = xk1
 	xk1 = jacobi_step(D, L, U, b, x0)
     return xk1
-
-x0 = array([1, 2])
-print jacobi_iteration(A, xk, x0)
 
 def gauss_seidel_step(D, L, U, b, xk):
     """Returns the next iteration xk1, given previous iteration xk, 
@@ -219,7 +201,7 @@ def gauss_seidel_iteration(A, b, x0, epsilon=1e-8):
     """
     D, L, U = decompose(A)
     xk1 = gauss_seidel_step(D, L, U, b, x0)
-    while (norm(xk1 - x0, 2) < epsilon):
+    while (norm(xk1 - x0, 2) > epsilon):
         x0 = xk1
         xk1 = gauss_seidel_step(D, L, U, b, x0)
     return xk1
