@@ -19,7 +19,7 @@ def decompose(A):
  
     Returns
     -------
-    (D, U, L) : tuple
+    (D, L, U) : tuple
                 Consisting off matrices D, U and L
     D : numpy.ndarray
         The 2 dimensional n x n square matrix consisting of the leading diagonal
@@ -35,14 +35,16 @@ def decompose(A):
 
     D = diag(diag(A))
     L = tril(A, -1)
-    U = A - tril(A, -1) - D
-    return D, U, L
+    U = A - L - D
+    return D, L, U
 
 A = array([[1,2,3], [4,5,6], [7,8,9]])
-dec = decompose(A)
-print dec
-print type(dec)
-#print "D = " dec[0]
+D, L, U = decompose(A)
+print D
+print L
+print U
+print type(decompose(A))
+
 
 def is_sdd(A):
     """Returns true if the matrix A is strictly diagonally dominant,
@@ -77,12 +79,16 @@ def is_sdd(A):
 def jacobi_step(D, L, U, b, xk):
     A = D + L + U
     if is_sdd(A) == False:
-	raise ValueError('Matrix A is not strictly diagonally dominant, we cannot use the,\
-		Jacobi method. Ensure matrix A is strictly diagonally dominant.')
+	raise ValueError('Matrix A is not strictly diagonally dominant')
 
     S = D
     T = L + U
+    b = b + 1
+    xk = xk + 1
+    return 0
 
+
+jacobi_step(D, L, U, 5, 5)
 
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
     pass
