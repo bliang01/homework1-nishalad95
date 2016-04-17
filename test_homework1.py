@@ -193,17 +193,17 @@ class TestExercise3(unittest.TestCase):
         self.assertAlmostEqual(norm(L2 - L), 0)
         self.assertAlmostEqual(norm(U2 - U), 0) 
 
-        #test a 4 x 4 matrix
-        A = array([[1,2,3,4],  [5,6,7,8], [9,10,11,12], [13,14,15,16]])
+        #test a 4 x 4 matrix and type float
+        A = array([[1,2.0,3,4],  [5,6,7.0,8], [9,10,11,12], [13,14,15,16]])
         D, L, U = decompose(A)
         D4 = numpy.diag([1,6,11,16])
         L4 = array([[0,0,0,0], [5,0,0,0], [9,10,0,0], [13,14,15,0]])
-        U4 = array([[0,2,3,4], [0,0,7,8], [0,0,0,12], [0,0,0,0]])
+        U4 = array([[0,2.0,3,4], [0,0,7.0,8], [0,0,0,12], [0,0,0,0]])
         self.assertAlmostEqual(norm(D4 - D), 0)
         self.assertAlmostEqual(norm(L4 - L), 0)
         self.assertAlmostEqual(norm(U4 - U), 0)
 
-	#test a 1 x 1  matrix
+	#test a 1 x 1 matrix
         A = array([[10]])
         D, L, U = decompose(A)
         D5 = numpy.diag([10])
@@ -212,6 +212,28 @@ class TestExercise3(unittest.TestCase):
         self.assertAlmostEquals(norm(D5 - D), 0)
         self.assertEquals(L5, None)
         self.assertEquals(U5, None)
+
+    def test_is_sdd(self):
+	# test written below to test if the is_sdd method correctly identifies
+	# matrices which are strictly diagonally dominant
+	
+	# is sdd
+	A = array([[10, -2], [3, 11]])
+	self.assertEquals(is_sdd(A), True)
+	B = array([1])
+	self.assertEquals(is_sdd(B), True)
+	B2 = array([[100.0, 7, 2],[0, 50, 9],[1,3,25]])
+	self.assertEquals(is_sdd(B2), True)
+
+	# is dd
+	C = array([[11, 2], [8, 10]])
+	self.assertEquals(is_sdd(C), False)
+
+	#is not sdd
+	D = array([[1,2,3], [4,5,6], [7,8,9]])
+	self.assertEquals(is_sdd(D), False)
+	D2 = array([[-10, 5], [-1, 0]])
+	self.assertEquals(is_sdd(D2), False)
 
     def test_jacobi_step(self):
         # the test written below only tests if jacobi step works in the case
