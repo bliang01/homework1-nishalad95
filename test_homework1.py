@@ -119,14 +119,14 @@ class TestExercise2(unittest.TestCase):
         x0 = 1
         x1 = gradient_step(x0, df, sigma=0.25)
         x1_actual = 0  # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual)
+        self.assertAlmostEqual(x1, x1_actual, places=2)
  
         f = lambda x: exp(x)
         df = lambda x: exp(x)
         x0 = 1
         x1 = gradient_step(x0, df, sigma=0.9)
-        x1_actual = -1.44  # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual)
+        x1_actual = -1.45  # x0 - sigma*df(x0)
+        self.assertAlmostEqual(x1, x1_actual, places=2)
 
     def test4_simpleExamples(self):
 	# this test verfies whether gradient_step works correctly for a variety of examples
@@ -136,21 +136,21 @@ class TestExercise2(unittest.TestCase):
 	x0 = 10
         x1 = gradient_step(x0, df, sigma=0.25)
         x1_actual = -52.5  # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual)
+        self.assertAlmostEqual(x1, x1_actual, places=2)
 
 	f = lambda x: sin(4*x)
         df = lambda x: 4*cos(x)
         x0 = 5
         x1 = gradient_step(x0, df, sigma=0.9)
         x1_actual = 3.979  # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual) 
+        self.assertAlmostEqual(x1, x1_actual, places=2)
 
 	f = lambda x: -x**2
         df = lambda x: -2*x
         x0 = 5
         x1 = gradient_step(x0, df, sigma=0.1)
         x1_actual = 6 # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual) 
+        self.assertAlmostEqual(x1, x1_actual, places=2) 
 
 # Still need to implement many more tests!!!!!!
 
@@ -235,6 +235,8 @@ class TestExercise3(unittest.TestCase):
 	D2 = array([[-10, 5], [-1, 0]])
 	self.assertEquals(is_sdd(D2), False)
 
+
+
     def test_jacobi_step(self):
         # the test written below only tests if jacobi step works in the case
         # when A is the identity matrix. In this case, jacobi_step() should
@@ -247,8 +249,26 @@ class TestExercise3(unittest.TestCase):
         b = array([1,2,3])
         x0 = ones(3)
         x1 = jacobi_step(D, L, U, b, x0)
-
         self.assertAlmostEqual(norm(x1-b), 0)
+
+	#test a tri-diagonal matrix that is not sdd
+	D = numpy.diag([1,2,3,4])
+	L = numpy.diag([1,2,3], k=1)
+	U = numpy.diag([1,2,3], k=-1)
+	b = array([10, 10, 10, 10])
+	x0 = ones(4)
+	with self.assertRaises(ValueError):
+		jacobi_step(D, L, U, b, x0)
+	
+	#test a tri-diagonal matrix which is sdd
+	D = numpy.diag([5,4])
+	L = numpy.diag([1], k=1)
+	U = numpy.diag([2], k=-1)
+	b = array([5,5])
+	x0 = array([1,2])
+	x1 = jacobi_step(D, L, U, b, x0)
+	self.assertAlmostEqual(norm(x1-b), 6.12, places=2)
+
 
     def test_jacobi_iteration(self):
         # the test written below only tests if jacobi iteration works in the
