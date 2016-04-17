@@ -285,9 +285,34 @@ class TestExercise3(unittest.TestCase):
         b = array([1,2,3])
         x0 = ones(3)
         x = jacobi_iteration(A, b, x0)
-
         self.assertAlmostEqual(norm(x-b), 0)
 
+	#test another sdd matrix
+	A = array([[10,1],[2,5]])
+	b = array([4,4])
+	x0 = array([1,1])
+	x = jacobi_iteration(A, b, x0)
+	difference = dot(A,x) - b
+	magnitude = norm(difference, 2)
+	self.assertAlmostEqual(magnitude, 0)
+
+    def test_gauss_seidel_iteration(self):
+        # the test written below only tests if gauss_seidel iteration works in the
+        # case when A is the identity matrix
+        A = eye(3)
+        b = array([1,2,3])
+        x0 = ones(3)
+        x = gauss_seidel_iteration(A, b, x0)
+        self.assertAlmostEqual(norm(x-b), 0)
+
+        #test another sdd matrix
+        A = array([[10,1],[2,5]])
+        b = array([4,4])
+        x0 = array([1,1])
+        x = gauss_seidel_iteration(A, b, x0)
+        difference = dot(A,x) - b
+        magnitude = norm(difference, 2)
+        self.assertAlmostEqual(magnitude, 0) 
 
 
 # The following code is run when this Python module / file is executed as a
