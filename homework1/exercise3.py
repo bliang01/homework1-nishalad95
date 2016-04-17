@@ -118,6 +118,7 @@ def jacobi_step(D, L, U, b, xk):
     b = b.astype(float)  
     b = b.transpose()
     difference = b - dot(T, xk)
+    D = D.astype(float)
     for i in range(0, len(A), 1):
 	D[i,i] = 1/D[i,i]
     S_inverse = D
@@ -190,7 +191,7 @@ def gauss_seidel_step(D, L, U, b, xk):
         raise ValueError('Matrix A is not strictly diagonally dominant')
     
     b = b.transpose()
-    xk = xk.tranpose()
+    xk = xk.transpose()
     difference = b - dot(L, xk)
     S = D + U
     xk1 = solve_triangular(S, difference)
