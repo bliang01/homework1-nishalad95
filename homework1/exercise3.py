@@ -58,16 +58,31 @@ def is_sdd(A):
     if len(A) == 1:
 	return True
     else:
-    	off_diag_elements = 0;
-    	for i in range(0, len(A), 1):
-		for j in range (0, len(A), 1):
-			if i != j:
-				off_diag_elements += A[i,j] 
+	off_diag_sum = []
+	for i in range(0, len(A)):
+		off_diag_value = 0
+		for j in range(0, len(A)):
+			if i !=j:
+				off_diag_value += A[i,j]
+		off_diag_sum.append(off_diag_value)
+		if not abs(A[i,i]) > abs(off_diag_sum[i])
+			return False
+	return True
 
-    for i in range(0, len(A), 1):
-	if not abs(A[i, i]) > off_diag_elements:
-		return False
-    return True
+
+    #if len(A) == 1:
+#	return True
+ #   else:
+  #  	off_diag_elements = 0;
+   # 	for i in range(0, len(A), 1):
+#		for j in range (0, len(A), 1):
+#			if i != j:
+#				off_diag_elements += A[i,j] 
+#
+ #   for i in range(0, len(A), 1):
+#	if not abs(A[i, i]) > off_diag_elements:
+#		return False
+#    return True
 
 def jacobi_step(D, L, U, b, xk):
     """Returns the next iteration xk1, given previous iteration xk, 
