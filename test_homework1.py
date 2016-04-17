@@ -235,8 +235,6 @@ class TestExercise3(unittest.TestCase):
 	D2 = array([[-10, 5], [-1, 0]])
 	self.assertEquals(is_sdd(D2), False)
 
-
-
     def test_jacobi_step(self):
         # the test written below only tests if jacobi step works in the case
         # when A is the identity matrix. In this case, jacobi_step() should
@@ -262,12 +260,22 @@ class TestExercise3(unittest.TestCase):
 	
 	#test a tri-diagonal matrix which is sdd
 	D = numpy.diag([5,4])
-	L = numpy.diag([1], k=1)
-	U = numpy.diag([2], k=-1)
+	U = numpy.diag([1], k=1)
+	L = numpy.diag([2], k=-1)
 	b = array([5,5])
 	x0 = array([1,2])
 	x1 = jacobi_step(D, L, U, b, x0)
 	self.assertAlmostEqual(norm(x1-b), 6.12, places=2)
+
+    def test_gauss_seidel_step(self):
+        # testing whether the gauss_seidel_step function works for a simple tri-diagonal matrix, which is not sdd
+        D = numpy.diag([5,4])
+        L = numpy.diag([1], k=-1)
+        U = numpy.diag([2], k=1)
+        b = array([5,5])
+        x0 = array([1,2])
+        x1 = gauss_seidel_step(D, L, U, b, x0)
+        self.assertAlmostEqual(norm(x1-b), 5.95, places=2)
 
 
     def test_jacobi_iteration(self):
