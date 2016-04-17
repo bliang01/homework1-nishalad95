@@ -76,13 +76,24 @@ def is_sdd(A):
 
 
 def jacobi_step(D, L, U, b, xk):
+    """Returns the next iteration xk1, given previous iteration xk, 
+    using the jacobi iteration technique to solve linear equations numerically.
+    
+    Parameters
+    ----------
+    
+ 
+    Returns
+    -------
+    xk1
+      
+    """
     A = D + L + U
     if is_sdd(A) == False:
 	raise ValueError('Matrix A is not strictly diagonally dominant')
 
-    # need to solve S(x(k+1)) = b - Tx(k)
-    # we know S is diagonal matrix, so the inverse of the diagonal is the reciprocal
-    # of all leading diagonal elements
+    # solve S(x(k+1)) = b - Tx(k)
+    # S is diagonal matrix; inverse of S is the reciprocal of all leading diagonal elements
     T = L + U
     xk = xk.transpose()
     b = b.transpose()
@@ -98,7 +109,15 @@ xk = array([5, 6])
 print jacobi_step(D, L, U, xk, xk)
 
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
-    pass
+    D, L, U = decompose(A)
+    xk1 = jacobi_step(D, L, U, b, x0)
+    while (norm(xk1 - x0, 2) < epsilon):
+	x0 = xk1
+	xk1 = jacobi_step(D, L, U, b, x0)
+    return xk1
+
+x0 = array([1, 2])
+print jacobi_iteration(A, xk, x0)
 
 def gauss_seidel_step(D, L, U, b, xk):
     pass
