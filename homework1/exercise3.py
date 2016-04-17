@@ -63,11 +63,16 @@ def is_sdd(A):
     boolean statement: True if matrix A is strictly diagonally dominant, false otherwise
       
     """
-    off_diag_elements = 0;
-    for i in range(0, len(A), 1):
-	for j in range (0, len(A), 1):
-		if i != j:
-			off_diag_elements += A[i,j] 
+    if len(A) == 1:
+	return True
+    else:
+    	off_diag_elements = 0;
+    	for i in range(0, len(A), 1):
+		for j in range (0, len(A), 1):
+			if i != j:
+				off_diag_elements += A[i,j] 
+
+    
 
     for i in range(0, len(A), 1):
 	if not abs(A[i, i]) > off_diag_elements:
@@ -123,8 +128,9 @@ def jacobi_step(D, L, U, b, xk):
 xk = array([5, 6])
 print jacobi_step(D, L, U, xk, xk)
 
+
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
-    """Returns three 2D matrices in an array.
+    """Returns solution to linear matrix equation using the Jacobi iteration method 
     
     Parameters
     ----------
@@ -178,6 +184,11 @@ def gauss_seidel_step(D, L, U, b, xk):
           1D array as next iteration in the gauss-seidal method
       
     """
+
+    A = D + L + U
+    if is_sdd(A) == False:
+        raise ValueError('Matrix A is not strictly diagonally dominant')
+    
     b = b.transpose()
     xk = xk.tranpose()
     difference = b - dot(L, xk)
@@ -187,4 +198,27 @@ def gauss_seidel_step(D, L, U, b, xk):
     return xk1
 
 def gauss_seidel_iteration(A, b, x0, epsilon=1e-8):
-    pass
+    """Returns solution to linear matrix equation using Gauss-Seidal iteration method
+    
+    Parameters
+    ----------
+    A : ndarray
+        2 dimensional n x n square matrix to be decomposed.
+    b : numpy.array of ints or floats
+        1D vector solution of Ax = b in the original problem
+    x0 : numpy.array of ints or floats
+         1D original guess vector
+    epsilon : float
+              roundoff error convergence threshold, default set to 1e-8
+ 
+    Returns
+    -------
+    xk1 : numpy.array
+          1D array solution to the equation using the jacobi method
+    """
+    D, L, U = decompose(A)
+    xk1 = gauss_seidel_step(D, L, U, b, x0)
+    while (norm(xk1 - x0, 2) < epsilon):
+        x0 = xk1
+        xk1 = gauss_seidel_step(D, L, U, b, x0)
+    return xk1
