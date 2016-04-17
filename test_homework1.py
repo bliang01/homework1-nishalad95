@@ -110,9 +110,47 @@ class TestExercise2(unittest.TestCase):
 		gradient_descent(f, df, x, sigma=0.5, epsilon=2)
 		gradient_descent(f, df, x, sigma=2, epsilon=0.1)
 			
-    def test3_simpleExamples(self):
+    
+    def test3_convexfunctions(self):
+        # this test verfies whether gradient_step works correctly for a variety of examples
+        # verify the test on different function examples
+        f = lambda x: x**4
+        df = lambda x: 4*x**3
+        x0 = 1
+        x1 = gradient_step(x0, df, sigma=0.25)
+        x1_actual = 0  # x0 - sigma*df(x0)
+        self.assertAlmostEqual(x1, x1_actual)
+ 
+        f = lambda x: exp(x)
+        df = lambda x: exp(x)
+        x0 = 1
+        x1 = gradient_step(x0, df, sigma=0.9)
+        x1_actual = -1.44  # x0 - sigma*df(x0)
+        self.assertAlmostEqual(x1, x1_actual)
+
+    def test4_simpleExamples(self):
 	# this test verfies whether gradient_step works correctly for a variety of examples
-	pass
+	# verify the test on different function examples
+	f = lambda x: x**3 - 5*x**2 + 4
+	df = lambda x: 3*x**2 - 5*x
+	x0 = 10
+        x1 = gradient_step(x0, df, sigma=0.25)
+        x1_actual = -52.5  # x0 - sigma*df(x0)
+        self.assertAlmostEqual(x1, x1_actual)
+
+	f = lambda x: sin(4*x)
+        df = lambda x: 4*cos(x)
+        x0 = 5
+        x1 = gradient_step(x0, df, sigma=0.9)
+        x1_actual = 3.979  # x0 - sigma*df(x0)
+        self.assertAlmostEqual(x1, x1_actual) 
+
+	f = lambda x: -x**2
+        df = lambda x: -2*x
+        x0 = 5
+        x1 = gradient_step(x0, df, sigma=0.1)
+        x1_actual = 6 # x0 - sigma*df(x0)
+        self.assertAlmostEqual(x1, x1_actual) 
 
 # Still need to implement many more tests!!!!!!
 
@@ -141,10 +179,39 @@ class TestExercise3(unittest.TestCase):
         D_actual = eye(3)
         L_actual = zeros((3,3))
         U_actual = zeros((3,3))
-
         self.assertAlmostEqual(norm(D_actual - D), 0)
         self.assertAlmostEqual(norm(L_actual - L), 0)
         self.assertAlmostEqual(norm(U_actual - U), 0)
+
+        #test a 3 x 3 matrix
+        A = array([[1,2,3], [4,5,6], [7,8,9]])
+        D, L, U = decompose(A)
+        D2 = numpy.diag([1,5,9])
+        L2 = array([[0,0,0], [4,0,0], [7,8,0]]) 
+        U2 = array([[0,2,3], [0,0,6], [0,0,0]])
+        self.assertAlmostEqual(norm(D2 - D), 0)
+        self.assertAlmostEqual(norm(L2 - L), 0)
+        self.assertAlmostEqual(norm(U2 - U), 0) 
+
+        #test a 4 x 4 matrix
+        A = array([[1,2,3,4],  [5,6,7,8], [9,10,11,12], [13,14,15,16]])
+        D, L, U = decompose(A)
+        D4 = numpy.diag([1,6,11,16])
+        L4 = array([[0,0,0,0], [5,0,0,0], [9,10,0,0], [13,14,15,0]])
+        U4 = array([[0,2,3,4], [0,0,7,8], [0,0,0,12], [0,0,0,0]])
+        self.assertAlmostEqual(norm(D4 - D), 0)
+        self.assertAlmostEqual(norm(L4 - L), 0)
+        self.assertAlmostEqual(norm(U4 - U), 0)
+
+	#test a 1 x 1  matrix
+        A = array([[10]])
+        D, L, U = decompose(A)
+        D5 = numpy.diag([10])
+        L5 = None 
+        U5 = None
+        self.assertAlmostEquals(norm(D5 - D), 0)
+        self.assertEquals(L5, None)
+        self.assertEquals(U5, None)
 
     def test_jacobi_step(self):
         # the test written below only tests if jacobi step works in the case
