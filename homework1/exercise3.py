@@ -19,26 +19,25 @@ def decompose(A):
  
     Returns
     -------
-    (D, L, U) : tuple
-                Consisting off matrices D, U and L
-    D : numpy.ndarray
-        The 2 dimensional n x n square matrix consisting of the leading diagonal
-        elements of the matrix A
-    L : numpy.ndarray
-        The 2 dimensional n x n square matrix consisting of the elements above
-        the leading diagonal in matrix A
-    U : numpy.ndarray
-        The 2 dimensional n x n square matrix consisting of the elements below
-        the leading diagonal in matrix A
-      
+    D, L, U : tuple
+              Consisting off matrices D, U and L
+    	      D : numpy.ndarray of ints or floats
+              The 2 dimensional n x n square matrix consisting 
+              of the leading diagonal elements of the matrix A
+    	      L : numpy.ndarray of ints or floats
+              The 2 dimensional n x n square matrix consisting 
+              of the elements above the leading diagonal in matrix A
+              U : numpy.ndarray of ints or floats
+              The 2 dimensional n x n square matrix consisting 
+              of the elements below the leading diagonal in matrix A
     """
-
+    A = A.astype(float)
     D = diag(diag(A))
     L = tril(A, -1)
     U = A - L - D
     return D, L, U
 
-A = array([[1,2,3], [4,5,6], [7,8,9]])
+A = array([[10, 2], [3, 11]])
 D, L, U = decompose(A)
 print D
 print L
@@ -56,7 +55,7 @@ def is_sdd(A):
     
     Parameters
     ----------
-    A : ndarray
+    A : numpy.ndarray of ints or floats
         2 dimensional n x n square matrix to be decomposed.
  
     Returns
@@ -81,14 +80,22 @@ def jacobi_step(D, L, U, b, xk):
     if is_sdd(A) == False:
 	raise ValueError('Matrix A is not strictly diagonally dominant')
 
-    S = D
+    # need to solve S(x(k+1)) = b - Tx(k)
+    # we know S is diagonal matrix, so the inverse of the diagonal is the reciprocal
+    # of all leading diagonal elements
     T = L + U
-    b = b + 1
-    xk = xk + 1
-    return 0
+    xk = xk.transpose()
+    b = b.transpose()
+    difference = b - dot(T, xk)
+    for i in range(0, len(A), 1):
+	D[i,i] = 1/D[i,i]
+    S_inverse = D
+    xk1 = dot(S_inverse, difference)
+    xk1 = xk1.transpose()
+    return xk1
 
-
-jacobi_step(D, L, U, 5, 5)
+xk = array([5, 6])
+print jacobi_step(D, L, U, xk, xk)
 
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
     pass
