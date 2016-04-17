@@ -1,3 +1,9 @@
+# Author: Nisha LAD
+# AMATH 483B: High Performance Scientific Computing
+# Homework 1 Exercise 3
+# Functions below are used to solve the linear systems of equations given an n x n matrix
+# using the Jacobi and Gauss-Seidel Methods
+
 # Hint: you should only need the following functions from numpy and scipy
 from numpy import diag, tril, triu, dot, array, arange
 from numpy.linalg import norm
@@ -30,9 +36,13 @@ def decompose(A):
     D = diag(diag(A))
     L = tril(A, -1)
     U = A - tril(A, -1) - D
-    return (D, U, L)
+    return D, U, L
 
 A = array([[1,2,3], [4,5,6], [7,8,9]])
+dec = decompose(A)
+print dec
+print type(dec)
+#print "D = " dec[0]
 
 def is_sdd(A):
     """Returns true if the matrix A is strictly diagonally dominant,
@@ -65,7 +75,14 @@ def is_sdd(A):
 
 
 def jacobi_step(D, L, U, b, xk):
-    pass
+    A = D + L + U
+    if is_sdd(A) == False:
+	raise ValueError('Matrix A is not strictly diagonally dominant, we cannot use the,\
+		Jacobi method. Ensure matrix A is strictly diagonally dominant.')
+
+    S = D
+    T = L + U
+
 
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
     pass
