@@ -59,13 +59,16 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
     """
    
     # NEED TO ADD IN THE CONDITION/STATEMENT FOR f(x*) <= f(x) for nearby x 
+
     if epsilon < 0 or epsilon > 1:
 	raise ValueError('Illegal value for epsilon, ensure 0 <= epsilon <= 1')
-    x_k = x
-    x_k1 = x + 1
+    x_k1 = x
+    x_k = x + 1
     while (abs(x_k1 - x_k) > epsilon):
 	x_k = x_k1
 	x_k1 = gradient_step(x_k, df, sigma)
+
+    
     return x_k1
 
 
