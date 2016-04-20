@@ -104,16 +104,13 @@ def jacobi_step(D, L, U, b, xk):
     # S is diagonal matrix; inverse of S is the reciprocal of all leading diagonal elements
     T = L + U
     xk = xk.astype(float)
-    xk = xk.transpose()
-    b = b.astype(float)  
-    b = b.transpose()
+    b = b.astype(float)
     difference = b - dot(T, xk)
     D = D.astype(float)
     for i in range(0, len(A), 1):
 	D[i,i] = 1/D[i,i]
     S_inverse = D
     xk1 = dot(S_inverse, difference)
-    xk1 = xk1.transpose()
     return xk1
 
 def jacobi_iteration(A, b, x0, epsilon=1e-8):
@@ -173,12 +170,9 @@ def gauss_seidel_step(D, L, U, b, xk):
     if is_sdd(A) == False:
         raise ValueError('Matrix A is not strictly diagonally dominant')
     
-    b = b.transpose()
-    xk = xk.transpose()
     difference = b - dot(L, xk)
     S = D + U
     xk1 = solve_triangular(S, difference)
-    xk1 = xk1.transpose()
     return xk1
 
 def gauss_seidel_iteration(A, b, x0, epsilon=1e-8):
