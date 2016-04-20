@@ -97,7 +97,7 @@ class TestExercise2(unittest.TestCase):
         x1_actual = 0.5 # x0 - sigma*(2*x0)
         self.assertAlmostEqual(x1, x1_actual)
 
-    def test2_sigmaAndEpsilon(self):
+    def test_sigmaAndEpsilon(self):
 	# this test determines whether gradient_step and gradient descent raises
 	# value errors on sigma and epsilon
 	f = lambda x: x**2 - 1
@@ -111,24 +111,25 @@ class TestExercise2(unittest.TestCase):
 		gradient_descent(f, df, x, sigma=2, epsilon=0.1)
 			
     
-    def test3_convexfunctions(self):
+    def test_convexfunctions(self):
         # this test verfies whether gradient_step works correctly for a variety of examples
         # verify the test on different function examples
-        f = lambda x: x**4
+	f = lambda x: x**2
+        df = lambda x: 2*x
+        x0 = 1
+        x1 = gradient_descent(f, df, x0)
+        x1_actual = 0
+        self.assertAlmostEqual(x1, x1_actual)
+
+	f = lambda x: x**4
         df = lambda x: 4*x**3
-        x0 = 1
-        x1 = gradient_step(x0, df, sigma=0.25)
-        x1_actual = 0  # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual, places=2)
- 
-        f = lambda x: exp(x)
-        df = lambda x: exp(x)
-        x0 = 1
-        x1 = gradient_step(x0, df, sigma=0.9)
-        x1_actual = -1.45  # x0 - sigma*df(x0)
+        x0 = 0.5
+        x1 = gradient_descent(f, df, x0, sigma = 0.6)
+        x1_actual = 0
         self.assertAlmostEqual(x1, x1_actual, places=2)
 
-    def test4_simpleExamples(self):
+
+    def test_simpleExamples_gradient_step(self):
 	# this test verfies whether gradient_step works correctly for a variety of examples
 	# verify the test on different function examples
 	f = lambda x: x**3 - 5*x**2 + 4
@@ -150,7 +151,17 @@ class TestExercise2(unittest.TestCase):
         x0 = 5
         x1 = gradient_step(x0, df, sigma=0.1)
         x1_actual = 6 # x0 - sigma*df(x0)
-        self.assertAlmostEqual(x1, x1_actual, places=2) 
+        self.assertAlmostEqual(x1, x1_actual, places=2)
+
+    def test_smallsigma(self):
+        # this test verfies whether gradient_step works correctly for a variety of examples
+        # verify the test on different function examples
+        f = lambda x: x**4
+        df = lambda x: 4*x**3
+        x0 = 0.4
+        x1 = gradient_descent(f, df, x0, sigma=0.1)
+        x1_actual = 0
+        self.assertAlmostEqual(x1, x1_actual, places=2)
 
 # Still need to implement many more tests!!!!!!
 
@@ -237,6 +248,11 @@ class TestExercise3(unittest.TestCase):
 	self.assertEquals(is_sdd(D), False)
 	D2 = array([[-10, 5], [-1, 0]])
 	self.assertEquals(is_sdd(D2), False)
+
+	arrayNeg5 = numpy.diag([-5 for x in range(32)])
+	arrayOffDiag = numpy.diag(ones(31), k=1) + numpy.diag(ones(31), k=-1) + numpy.diag(ones(30), k=2) + numpy.diag(ones(30), k=-2)
+	A = arrayNeg5 + arrayOffDiag
+	self.assertEquals(is_sdd(A), True)
 
     def test_jacobi_step(self):
         # the test written below only tests if jacobi step works in the case
