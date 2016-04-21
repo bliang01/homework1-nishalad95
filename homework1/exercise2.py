@@ -28,7 +28,6 @@ def gradient_step(xk, df, sigma):
     return xk - sigma*df(xk)
 
 
-
 def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
     """Returns a minima of `f` using the Gradient Descent method.
 
@@ -56,19 +55,40 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
     -------
     x_k1 :     double 
               The next iteration
-    """
-   
-    # NEED TO ADD IN THE CONDITION/STATEMENT FOR f(x*) <= f(x) for nearby x 
+    """ 
 
     if epsilon < 0 or epsilon > 1:
 	raise ValueError('Illegal value for epsilon, ensure 0 <= epsilon <= 1')
-    x_k1 = x
-    x_k = x + 1
+    x_k1 = x * 1.0
+    x_k = (x + 1) * 1.0
     while (abs(x_k1 - x_k) > epsilon):
+	if (f(x_k1) < -1000):
+		raise ValueError('There is no local minimum found in this function')
 	x_k = x_k1
-	x_k1 = gradient_step(x_k, df, sigma)
+        x_k1 = gradient_step(x_k, df, sigma)
+   
+    if (df(x_k1 - 0.01) < 0 and df(x_k1 + 0.01) > 0):
+    	return x_k1
+    elif (df(x_k1 - 0.01) > 0):
+	return gradient_descent(f, df, x_k1 - 0.01)
+    else:
+	return gradient_descent(f, df, x_k1 + 0.01)	
 
-    
-    return x_k1
+f = lambda x : x**2
+df = lambda x : 2*x
+print gradient_descent(f, df, 0.5)
+print gradient_descent(f, df, 0)
+
+f = lambda x : 0.25*x**4 - 0.5*x**2
+df = lambda x : x**3 - x
+print gradient_descent(f, df, 0)
+
+f = lambda x : x**3
+df = lambda x : 3*x**2
+print gradient_descent(f, df, 0)
+
+f = lambda x : -x**2
+df = lambda x : -2*x
+print gradient_descent(f, df, 0)
 
 
