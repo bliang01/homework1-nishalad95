@@ -66,7 +66,8 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
 		raise ValueError('There is no local minimum found in this function')
 	x_k = x_k1
         x_k1 = gradient_step(x_k, df, sigma)
-   
+  
+    # now test if it the stationary point is actually a minimum
     if (df(x_k1 - 0.01) < 0 and df(x_k1 + 0.01) > 0):
     	return x_k1
     elif (df(x_k1 - 0.01) > 0):
@@ -74,21 +75,21 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
     else:
 	return gradient_descent(f, df, x_k1 + 0.01)	
 
-f = lambda x : x**2
-df = lambda x : 2*x
-print gradient_descent(f, df, 0.5)
-print gradient_descent(f, df, 0)
+#f = lambda x : x**2
+#df = lambda x : 2*x
+#print gradient_descent(f, df, 0.5)
+#print gradient_descent(f, df, 0)
 
-f = lambda x : 0.25*x**4 - 0.5*x**2
-df = lambda x : x**3 - x
-print gradient_descent(f, df, 0)
+#f = lambda x : 0.25*x**4 - 0.5*x**2
+#df = lambda x : x**3 - x
+#print gradient_descent(f, df, 0)
 
-f = lambda x : x**3
-df = lambda x : 3*x**2
-print gradient_descent(f, df, 0)
+#f = lambda x : x**3
+#df = lambda x : 3*x**2
+#print gradient_descent(f, df, 0)
 
-f = lambda x : -x**2
-df = lambda x : -2*x
-print gradient_descent(f, df, 0)
+#f = lambda x : -x**2
+#df = lambda x : -2*x
+#print gradient_descent(f, df, 0)
 
 

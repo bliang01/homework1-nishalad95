@@ -76,7 +76,7 @@ Here we list some suggested tests you should write for your code.
 class TestExercise2(unittest.TestCase):
     """Testing the validity of
 
-    * hiomework1.exercise2.gradient_step
+    * homework1.exercise2.gradient_step
     * homework1.exercise2.gradient_descent
 
     In this problem we give less guidance on what tests you should write but
@@ -128,6 +128,19 @@ class TestExercise2(unittest.TestCase):
         x1_actual = 0
         self.assertAlmostEqual(x1, x1_actual, places=2)
 
+    def test_double_well(self):
+	# in this function there is a maximum in between 2 minima
+	f = lambda x: 0.25*x**4 - 0.5*x**2
+	df = lambda x: x**3 - x
+	x0 = 0 #local maxima in between 2 minima
+	x1 = gradient_descent(f, df, x0, sigma = 0.5)
+	x1_actual = -1
+	self.assertAlmostEqual(x1, x1_actual, places = 2)
+	x0 = 0.1
+	x1_actual = 1
+	x1 = gradient_descent(f, df, x0, sigma = 0.5)
+	self.assertAlmostEqual(x1, x1_actual, places = 2)
+	
 
     def test_simpleExamples_gradient_step(self):
 	# this test verfies whether gradient_step works correctly for a variety of examples
@@ -163,7 +176,6 @@ class TestExercise2(unittest.TestCase):
         x1_actual = 0
         self.assertAlmostEqual(x1, x1_actual, places=2)
 
-# Still need to implement many more tests!!!!!!
 
 
 class TestExercise3(unittest.TestCase):
