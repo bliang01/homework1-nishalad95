@@ -22,7 +22,7 @@ def gradient_step(xk, df, sigma):
     xk - sigma*df(xk) : double 
 			The next iteration x_(k+1) given the previous iterate xk
     """    
-
+    
     if sigma > 1 or sigma < 0:
 	raise ValueError('Illegal value of sigma entered, ensure 0 <= sigma <= 1')
     return xk - sigma*df(xk)
