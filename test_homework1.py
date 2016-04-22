@@ -153,10 +153,10 @@ class TestExercise2(unittest.TestCase):
         self.assertAlmostEqual(x1, x1_actual, places=2)
 
 	f = lambda x: sin(4*x)
-        df = lambda x: 4*cos(x)
-        x0 = 5
-        x1 = gradient_step(x0, df, sigma=0.9)
-        x1_actual = 3.979  # x0 - sigma*df(x0)
+        df = lambda x: 4*cos(4*x)
+        x0 = 0.5
+        x1 = gradient_step(x0, df, sigma=0.2)
+        x1_actual = 0.833  # x0 - sigma*df(x0)
         self.assertAlmostEqual(x1, x1_actual, places=2)
 
 	f = lambda x: -x**2
@@ -165,6 +165,15 @@ class TestExercise2(unittest.TestCase):
         x1 = gradient_step(x0, df, sigma=0.1)
         x1_actual = 6 # x0 - sigma*df(x0)
         self.assertAlmostEqual(x1, x1_actual, places=2)
+
+    def test_gradient_descent_trig(self):
+	# tests whether a trig function correctly outputs a local minima
+	f = lambda x : sin(x)
+	df = lambda x : cos(x)
+	x0 = 0.1
+	x1 = gradient_descent(f, df, x0, sigma = 0.8)
+	x1_actual = numpy.pi
+	self.assertAlmostEqual(x1, x1_actual, places=2)
 
     def test_smallsigma(self):
         # this test verfies whether gradient_step works correctly for a variety of examples
