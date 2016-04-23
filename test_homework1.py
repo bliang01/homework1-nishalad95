@@ -172,7 +172,7 @@ class TestExercise2(unittest.TestCase):
 	df = lambda x : cos(x)
 	x0 = 0.1
 	x1 = gradient_descent(f, df, x0, sigma = 0.8)
-	x1_actual = numpy.pi
+	x1_actual = -(1.0*numpy.pi)/2
 	self.assertAlmostEqual(x1, x1_actual, places=2)
 
     def test_smallsigma(self):
