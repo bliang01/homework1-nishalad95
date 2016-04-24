@@ -63,9 +63,9 @@ def is_sdd(A):
 		off_diag_value = 0
 		for j in range(0, len(A)):
 			if i !=j:
-				off_diag_value += A[i,j]
+				off_diag_value += abs(A[i,j])
 		off_diag_sum.append(off_diag_value)
-		if not abs(A[i,i]) > abs(off_diag_sum[i]):
+		if not abs(A[i,i]) > off_diag_sum[i]:
 			return False
 	return True
 
