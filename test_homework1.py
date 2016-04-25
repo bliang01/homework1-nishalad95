@@ -249,12 +249,9 @@ class TestExercise3(unittest.TestCase):
 	# test written below to test if the is_sdd method correctly identifies
 	# matrices which are strictly diagonally dominant
 
-	
 	# is sdd
 	A = array([[10, -2], [3, 11]])
 	self.assertEquals(is_sdd(A), True)
-	B = array([1])
-	self.assertEquals(is_sdd(B), True)
 	B2 = array([[100.0, 7, 2],[0, 50, 9],[1,3,25]])
 	self.assertEquals(is_sdd(B2), True)
 
@@ -288,15 +285,6 @@ class TestExercise3(unittest.TestCase):
         x0 = ones(3)
         x1 = jacobi_step(D, L, U, b, x0)
         self.assertAlmostEqual(norm(x1-b), 0)
-
-	#test a tri-diagonal matrix that is not sdd
-	D = numpy.diag([1,2,3,4])
-	L = numpy.diag([1,2,3], k=1)
-	U = numpy.diag([1,2,3], k=-1)
-	b = array([10, 10, 10, 10])
-	x0 = ones(4)
-	with self.assertRaises(ValueError):
-		jacobi_step(D, L, U, b, x0)
 	
 	#test a tri-diagonal matrix which is sdd
 	D = numpy.diag([5,4])
@@ -335,6 +323,16 @@ class TestExercise3(unittest.TestCase):
 	difference = dot(A,x) - b
 	magnitude = norm(difference, 2)
 	self.assertAlmostEqual(magnitude, 0)
+
+	#test a tri-diagonal matrix that is not sdd
+        D = numpy.diag([1,2,3,4])
+        L = numpy.diag([1,2,3], k=1)
+        U = numpy.diag([1,2,3], k=-1)
+        A = D + L + U
+	b = array([10, 10, 10, 10])
+        x0 = ones(4)
+        with self.assertRaises(ValueError):
+                jacobi_iteration(A, b, x0)
 
     def test_gauss_seidel_iteration(self):
         # the test written below only tests if gauss_seidel iteration works in the
