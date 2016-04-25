@@ -32,8 +32,11 @@ def decompose(A):
               of the elements below the leading diagonal in matrix A
     """
     A = A.astype(float)
+    # diagonal matrix
     D = diag(diag(A))
+    # lower elements of matrix from diagonal
     L = tril(A, -1)
+    # upper elements of matrix from diagonal
     U = A - L - D
     return D, L, U
 
@@ -48,26 +51,23 @@ def is_sdd(A):
     Parameters
     ----------
     A : numpy.ndarray of ints or floats
-        2 dimensional n x n square matrix to be decomposed.
+        2 dimensional n x n square matrix to be decomposed, assuming A is not a 1 x 1 matrix
  
     Returns
     -------
     boolean statement: True if matrix A is strictly diagonally dominant, false otherwise
       
     """
-    if len(A) == 1:
-	return True
-    else:
-	off_diag_sum = []
-	for i in range(0, len(A)):
-		off_diag_value = 0
-		for j in range(0, len(A)):
-			if i !=j:
-				off_diag_value += abs(A[i,j])
-		off_diag_sum.append(off_diag_value)
-		if not abs(A[i,i]) > off_diag_sum[i]:
-			return False
-	return True
+    # for each row of matrix A, add up the absolute value of the non-diagonal elements
+    # compare the sum to corresponding diagonal element
+    for i in range(0, len(A)):
+	off_diag_value = 0
+        for j in range(0, len(A)):
+		if i !=j:
+			off_diag_value += abs(A[i,j])
+	if not abs(A[i,i]) > off_diag_value:
+		return False
+    return True
 
 
 def jacobi_step(D, L, U, b, xk):
@@ -96,20 +96,17 @@ def jacobi_step(D, L, U, b, xk):
           1D array as next iteration in the jacobi method
       
     """
-    A = D + L + U
-    if is_sdd(A) == False:
-	raise ValueError('Matrix A is not strictly diagonally dominant')
 
-    # solve S(x(k+1)) = b - Tx(k)
-    # S is diagonal matrix; inverse of S is the reciprocal of all leading diagonal elements
     T = L + U
     xk = xk.astype(float)
     b = b.astype(float)
     difference = b - dot(T, xk)
     D = D.astype(float)
-    for i in range(0, len(A), 1):
+    # inverse of diagonal matrix is the reciprocal of the elements
+    for i in range(0, len(D)):
 	D[i,i] = 1/D[i,i]
     S_inverse = D
+    # solve the equation
     xk1 = dot(S_inverse, difference)
     return xk1
 
@@ -132,6 +129,11 @@ def jacobi_iteration(A, b, x0, epsilon=1e-8):
     xk1 : numpy.array
           1D array solution to the equation using the jacobi method
     """
+
+    if is_sdd(A) == False:
+	raise ValueError('Matrix A is not strictly diagonally dominant')
+    # while covergence threhold is true retrieve next iteration from jacobi_step
+    # update current value
     D, L, U = decompose(A)
     xk1 = jacobi_step(D, L, U, b, x0)
     while (norm(xk1 - x0, 2) > epsilon):
@@ -169,7 +171,7 @@ def gauss_seidel_step(D, L, U, b, xk):
     A = D + L + U
     if is_sdd(A) == False:
         raise ValueError('Matrix A is not strictly diagonally dominant')
-    
+    # solve the matrix equation
     difference = b - dot(L, xk)
     S = D + U
     xk1 = solve_triangular(S, difference)
@@ -195,7 +197,10 @@ def gauss_seidel_iteration(A, b, x0, epsilon=1e-8):
           1D array solution to the equation using the jacobi method
     """
     D, L, U = decompose(A)
+    # initialise the first value
     xk1 = gauss_seidel_step(D, L, U, b, x0)
+    # while the convergence threhold is true retreive the next iteration from gauss_seidel_step
+    # update values
     while (norm(xk1 - x0, 2) > epsilon):
         x0 = xk1
         xk1 = gauss_seidel_step(D, L, U, b, x0)

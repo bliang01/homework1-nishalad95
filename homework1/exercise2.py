@@ -59,6 +59,8 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
 
     if epsilon < 0 or epsilon > 1:
 	raise ValueError('Illegal value for epsilon, ensure 0 <= epsilon <= 1')
+    # initialise iteration
+    # while the convergence test is true, retreive next iteration value
     x_k1 = x * 1.0
     x_k = (x + 1) * 1.0
     while (abs(x_k1 - x_k) > epsilon):
@@ -68,6 +70,7 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
         x_k1 = gradient_step(x_k, df, sigma)
   
     # now test if it the stationary point is actually a minimum
+    # if not, perturb the initial guess and try the iteration again
     if (df(x_k1 - 0.01) < 0 and df(x_k1 + 0.01) > 0):
     	return x_k1
     elif (df(x_k1 - 0.01) > 0):

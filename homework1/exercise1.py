@@ -48,10 +48,12 @@ def collatz(n):
     sequence : list
                The Collatz sequence for starting point n
 
-    """
-    
+    """ 
     sequence = [n]
-    currentValue = n    
+    currentValue = n
+    # while the next value in sequence is not 1
+    # retrieve next collatz map iteration
+    # append to sequence array    
     while (currentValue != 1):
 	nextValue = collatz_step(currentValue)
 	sequence.append(nextValue)
