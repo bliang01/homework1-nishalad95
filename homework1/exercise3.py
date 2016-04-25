@@ -168,9 +168,6 @@ def gauss_seidel_step(D, L, U, b, xk):
       
     """
 
-    A = D + L + U
-    if is_sdd(A) == False:
-        raise ValueError('Matrix A is not strictly diagonally dominant')
     # solve the matrix equation
     difference = b - dot(L, xk)
     S = D + U
@@ -196,6 +193,8 @@ def gauss_seidel_iteration(A, b, x0, epsilon=1e-8):
     xk1 : numpy.array
           1D array solution to the equation using the jacobi method
     """
+    if is_sdd(A) == False:
+        raise ValueError('Matrix A is not strictly diagonally dominant')
     D, L, U = decompose(A)
     # initialise the first value
     xk1 = gauss_seidel_step(D, L, U, b, x0)
