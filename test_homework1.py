@@ -293,6 +293,7 @@ class TestExercise3(unittest.TestCase):
 	b = array([5,5])
 	x0 = array([1,2])
 	x1 = jacobi_step(D, L, U, b, x0)
+	# 6.12 calculated by hand
 	self.assertAlmostEqual(norm(x1-b), 6.12, places=2)
 
     def test_gauss_seidel_step(self):
@@ -303,6 +304,7 @@ class TestExercise3(unittest.TestCase):
         b = array([5,5])
         x0 = array([1,2])
         x1 = gauss_seidel_step(D, L, U, b, x0)
+	# 5.95 calculated by hand
         self.assertAlmostEqual(norm(x1-b), 5.95, places=2)
 
 
