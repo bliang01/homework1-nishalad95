@@ -1,0 +1,20 @@
+test_collatz (test_homework1_66503138.TestExercise1) ... ok
+test_collatz_step (test_homework1_66503138.TestExercise1) ... ok
+test_collatz_step_error (test_homework1_66503138.TestExercise1) ... ok
+test_collatz_step_one (test_homework1_66503138.TestExercise1) ... ok
+test_gradient_descent (test_homework1_66503138.TestExercise2) ... ok
+test_gradient_descent_nearmin_smallsig (test_homework1_66503138.TestExercise2) ... ok
+test_gradient_descent_robust (test_homework1_66503138.TestExercise2) ... ok
+test_gradient_step (test_homework1_66503138.TestExercise2) ... ok
+test_sigma_condition (test_homework1_66503138.TestExercise2) ... ok
+test_decompose (test_homework1_66503138.TestExercise3) ... ok
+test_gauss_seidel_iteration (test_homework1_66503138.TestExercise3) ... ok
+test_gauss_seidel_step (test_homework1_66503138.TestExercise3) ... ok
+test_isSDD (test_homework1_66503138.TestExercise3) ... ok
+test_jacobi_iteration (test_homework1_66503138.TestExercise3) ... ok
+test_jacobi_step (test_homework1_66503138.TestExercise3) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.002s
+
+OK
